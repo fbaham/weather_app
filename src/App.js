@@ -7,6 +7,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { createMuiTheme } from '@material-ui/core/styles';
 import LocationList from './components/LocationList';
+import ForecastExtended from './components/ForecastExtended'
 import './App.css';
 
 const cities = [
@@ -18,18 +19,25 @@ const cities = [
 const theme = createMuiTheme({
 });
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = { city: 'Nueva Ciudad'};
+  }
+
   handleSelectedLocation = city => {
-    console.log("handleSelectionLocation");
+    console.log(`handleSelectionLocation ${city}`);
   };
   
   render(){
+    const {city} = this.state
     return(
       <MuiThemeProvider theme={theme}>
         <Grid>
           <Row>
             <AppBar position='sticky'>
               <Toolbar>
-                <Typography variant='title' color='inherit'>
+                <Typography variant='h3' color='inherit'>
                   Weather App
                 </Typography>
               </Toolbar>
@@ -42,7 +50,11 @@ class App extends Component {
               />
             </Col>
             <Col xs={12} md={6}>
-              <div className="details"></div>
+              <Paper zDepth={4}>
+                <div className="details">
+                  <ForecastExtended city={city}></ForecastExtended>
+                </div>
+              </Paper>
             </Col>
           </Row>
         </Grid>
