@@ -5,7 +5,7 @@ import {
   SNOW,
   THUNDER,
   DRIZZLE
-} from './../constants/weathers'
+} from '../constants/weathers'
 
 const getWeatherState = weather => {
   const { id } = weather;
@@ -24,7 +24,7 @@ const getWeatherState = weather => {
   }
 }
 
-const getWeather = weather_data => {
+const transformWeather = weather_data => {
   const { humidity, temp } = weather_data.main;
   const { speed } = weather_data.wind;
   const weatherState = getWeatherState(weather_data.weather[0]);
@@ -38,4 +38,4 @@ const getWeather = weather_data => {
   return data;
 }
 
-export default getWeather;
+export default transformWeather;

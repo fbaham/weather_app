@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import ForecastItem from './ForecastItem'
 import getUrlForecastByCity from './../services/getUrlForecastByCity'
-import getForecast from './../services/getForecast'
+import transformForecast from './../services/transformForecast'
 import './styles.css';
 
 class ForecastExtended extends Component {
@@ -13,21 +13,38 @@ class ForecastExtended extends Component {
   }
 
   componentDidMount() {
-    const api_forecast = getUrlForecastByCity(this.props.city);
+    this.updateCity(this.props.city)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.city !== this.props.city){
+      this.setState({forecastData: null});
+      this.updateCity(nextProps.city)
+    }
+  }
+
+  updateCity = city => {
+    const api_forecast = getUrlForecastByCity(city);
     fetch(api_forecast).then(
       data => (data.json())
     ).then(
       weather_data => {
-        const forecastData = getForecast(weather_data);
+        const forecastData = transformForecast(weather_data);
         console.log(forecastData)
         this.setState({ forecastData });
       }
     );
   }
 
-  renderForecastItemDays(){
-    return <h1>render items</h1>;
-    // return days.map( day => (<ForecastItem weekDay={day} hour={10} data={data}></ForecastItem>))
+  renderForecastItemDays(forecastData){
+    return forecastData.map( forecast => (
+      <ForecastItem 
+        key={`${forecast.weekDay}${forecast.hour}`}
+        weekDay={forecast.weekDay} 
+        hour={forecast.hour} 
+        data={forecast.data}>
+      </ForecastItem>
+    ))
   }
   renderProgress = () => {
     return <h3>Cargando Pronostico Extendido...</h3>;
@@ -39,7 +56,7 @@ class ForecastExtended extends Component {
       <div>
         <h2 className='forecast-title'>Pronóstico Extendido para {city}</h2>
         { forecastData ?
-          this.renderForecastItemDays() :
+          this.renderForecastItemDays(forecastData) :
           this.renderProgress() }
       </div>
     );
@@ -48,6 +65,7 @@ class ForecastExtended extends Component {
 
 ForecastExtended.propTypes = {
   city: PropTypes.string.isRequired,
+  forecastData: PropTypes.array,
 }
 
 export default ForecastExtended;

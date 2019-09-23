@@ -31,7 +31,7 @@ class App extends Component {
   };
   
   render(){
-    const {city} = this.state
+    const {city, forecastData } = this.state
     return(
       <MuiThemeProvider theme={theme}>
         <Grid>
@@ -55,7 +55,7 @@ class App extends Component {
                 <div className="details">
                   {
                     city && 
-                    <ForecastExtended city={city}></ForecastExtended>
+                    <ForecastExtended city={city} forecastData={forecastData}></ForecastExtended>
                   }
                 </div>
               </Paper>
@@ -66,7 +66,5 @@ class App extends Component {
     );
   };
 };
-
-
 
 export default App;
