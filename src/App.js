@@ -6,8 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { createMuiTheme } from '@material-ui/core/styles';
-import LocationList from './components/LocationList';
-import ForecastExtended from './components/ForecastExtended'
+import ForecastExtendedContainer from './containers/ForecastExtendedContainer';
+import LocationListContainer from './containers/LocationListContainer'
 import './App.css';
 
 const cities = [
@@ -16,22 +16,17 @@ const cities = [
   'Bogota,col',
   'Puerto Montt,cl',
 ]
-const theme = createMuiTheme({
-});
-class App extends Component {
+const theme = createMuiTheme(()=> {});
 
+
+class App extends Component {
+  
   constructor() {
     super();
     this.state = { city: null};
   }
-
-  handleSelectedLocation = city => {
-    this.setState({city});
-    console.log(`handleSelectionLocation ${city}`);
-  };
   
   render(){
-    const {city, forecastData } = this.state
     return(
       <MuiThemeProvider theme={theme}>
         <Grid>
@@ -46,17 +41,12 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={12} md={6}>
-              <LocationList cities={cities}
-                onSelectedLocation={this.handleSelectedLocation}
-              />
+              <LocationListContainer cities={cities}/>
             </Col>
             <Col xs={12} md={6}>
               <Paper>
                 <div className="details">
-                  {
-                    city && 
-                    <ForecastExtended city={city} forecastData={forecastData}></ForecastExtended>
-                  }
+                  <ForecastExtendedContainer></ForecastExtendedContainer>
                 </div>
               </Paper>
             </Col>
